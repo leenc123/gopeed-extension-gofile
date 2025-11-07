@@ -8,7 +8,10 @@ gopeed.events.onResolve(async (ctx) => {
       'authorization': gopeed.settings.authorization,
     },
   });
-
+// 将响应转换为JSON对象
+  const data = await resp.json();
+  // 打印JSON字符串
+  gopeed.logger.info(JSON.stringify(data, null, 2));
   if (resp.status == 'ok')
   gopeed.logger.info('data', resp.status);
 
