@@ -23345,7 +23345,7 @@ gopeed.events.onResolve(async function (ctx) {
   var data = await resp.json();
   // 打印JSON字符串
   var response = JSON.parse(JSON.stringify(data, null, 2));
-  files = [];
+  var files = [];
   if (response.status == 'ok') {
     files = Object.values(response.data.children).map(function (item) {
       return {

@@ -13,7 +13,7 @@ gopeed.events.onResolve(async (ctx) => {
   const data = await resp.json();
   // 打印JSON字符串
   const response = JSON.parse(JSON.stringify(data, null, 2))
-  files = []
+  let files = []
   if (response.status == 'ok') {
     files = Object.values(response.data.children).map(item => ({
       req: {
