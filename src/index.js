@@ -1,23 +1,17 @@
 import * as cheerio from 'cheerio';
 gopeed.events.onResolve(async (ctx) => {
   let path = new URL(ctx.req.url).pathname.substring(1);
-  const resp = await fetch(ctx.req.url, {
+  gopeed.logger.info('path', path);
+  gopeed.settings.refreshToken
+  const resp = await fetch('https://api.gofile.io/contents/1c7K8b?wt=4fd6sg89d7s6', {
     headers: {
-      'User-Agent': gopeed.settings.ua,
+      'authorization': gopeed.settings.authorization,
     },
   });
-  const html = await resp.text();
-  gopeed.logger.info('html', html);
-// 使用cheerio解析HTML
-  const $ = cheerio.load(html);
-  const btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');
 
-  gopeed.logger.info('html', `找到 ${btns.length} 个下载按钮`);
 
-  if (btns.length === 0) {
-    alert("未找到可下载的文件");
-    return;
-  }
+  gopeed.logger.info('resp', resp);
+
   ctx.res = {
     name: 'example',
     files: [

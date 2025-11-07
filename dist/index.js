@@ -23334,21 +23334,14 @@ __webpack_require__.r(__webpack_exports__);
 
 gopeed.events.onResolve(async function (ctx) {
   var path = new URL(ctx.req.url).pathname.substring(1);
-  var resp = await fetch(ctx.req.url, {
+  gopeed.logger.info('path', path);
+  gopeed.settings.refreshToken;
+  var resp = await fetch('https://api.gofile.io/contents/1c7K8b?wt=4fd6sg89d7s6', {
     headers: {
-      'User-Agent': gopeed.settings.ua
+      'authorization': gopeed.settings.authorization
     }
   });
-  var html = await resp.text();
-  gopeed.logger.info('html', html);
-  // 使用cheerio解析HTML
-  var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
-  var btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');
-  gopeed.logger.info('html', "\u627E\u5230 ".concat(btns.length, " \u4E2A\u4E0B\u8F7D\u6309\u94AE"));
-  if (btns.length === 0) {
-    alert("未找到可下载的文件");
-    return;
-  }
+  gopeed.logger.info('resp', resp);
   ctx.res = {
     name: 'example',
     files: [{
