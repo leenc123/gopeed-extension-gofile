@@ -1,50 +1,24 @@
 import * as cheerio from 'cheerio';
-async function fetchWithRetry(url, retries = 3, delay = 2000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      gopeed.logger.info(`尝试第 ${i + 1} 次获取页面...`);
-
-      const resp = await fetch(url, {
+async function fetchWithWait(url, waitTime = 3000) {
+    gopeed.logger.info(`获取页面，等待 ${waitTime}ms 模拟加载...`);
+    
+    const resp = await fetch(url, {
         headers: {
-          'User-Agent': gopeed.settings.ua,
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-          'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'keep-alive',
-          'Upgrade-Insecure-Requests': '1',
+            'User-Agent': gopeed.settings.ua,
         },
-        timeout: 30000
-      });
-
-      if (!resp.ok) {
-        throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
-      }
-
-      const html = await resp.text();
-
-      // 检查页面是否包含预期内容
-      if (html.includes('item_download') || html.includes('download')) {
-        gopeed.logger.info('页面包含下载相关元素');
-        return html;
-      } else {
-        gopeed.logger.warn('页面可能未完全加载，未找到下载元素');
-        if (i < retries - 1) {
-          gopeed.logger.info(`等待 ${delay}ms 后重试...`);
-          await new Promise(resolve => setTimeout(resolve, delay));
-        }
-      }
-    } catch (error) {
-      gopeed.logger.error(`第 ${i + 1} 次尝试失败:`, error);
-      if (i < retries - 1) {
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-    }
-  }
-  throw new Error('所有重试尝试都失败了');
+    });
+    
+    const html = await resp.text();
+    
+    // 模拟等待页面 JavaScript 执行
+    await new Promise(resolve => setTimeout(resolve, waitTime));
+    
+    return html;
 }
 gopeed.events.onResolve(async (ctx) => {
   try {
-    const html = await fetchWithRetry(ctx.req.url, 30, 2000);
+   // 使用示例
+    const html = await fetchWithWait(ctx.req.url, 10000);
     const $ = cheerio.load(html);
 
     // 多种方式查询元素
