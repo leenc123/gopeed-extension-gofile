@@ -30,6 +30,15 @@ gopeed.events.onResolve(async function (ctx) {
   });
   var html = await resp.text();
   gopeed.logger.info('html', html);
+  // 使用DOMParser解析HTML
+  var parser = new DOMParser();
+  var document = parser.parseFromString(html, 'text/html');
+  var btns = document.querySelectorAll("button.item_download.border.border-gray-600");
+  console.debug("\u627E\u5230 ".concat(btns.length, " \u4E2A\u4E0B\u8F7D\u6309\u94AE"));
+  if (btns.length === 0) {
+    alert("未找到可下载的文件");
+    return;
+  }
   ctx.res = {
     name: 'example',
     files: [{
