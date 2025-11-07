@@ -21,9 +21,15 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-gopeed.events.onResolve(function (ctx) {
+gopeed.events.onResolve(async function (ctx) {
   var path = new URL(ctx.req.url).pathname.substring(1);
-  gopeed.logger.info(path);
+  var resp = await fetch(ctx.req.url, {
+    headers: {
+      'User-Agent': gopeed.settings.ua
+    }
+  });
+  var html = await resp.text();
+  gopeed.logger.info('html', html);
   ctx.res = {
     name: 'example',
     files: [{
