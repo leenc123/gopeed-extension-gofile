@@ -23341,7 +23341,6 @@ gopeed.events.onResolve(async function (ctx) {
   });
   var html = await resp.text();
   gopeed.logger.info('html', html);
-  // 使用DOMParser解析HTML
   // 使用cheerio解析HTML
   var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
   var btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');

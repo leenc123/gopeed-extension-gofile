@@ -8,7 +8,6 @@ gopeed.events.onResolve(async (ctx) => {
   });
   const html = await resp.text();
   gopeed.logger.info('html', html);
-  // 使用DOMParser解析HTML
 // 使用cheerio解析HTML
   const $ = cheerio.load(html);
   const btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');
