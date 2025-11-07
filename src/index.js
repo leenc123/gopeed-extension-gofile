@@ -10,7 +10,7 @@ gopeed.events.onResolve(async (ctx) => {
   });
 
 
-  gopeed.logger.info('resp', resp.text);
+  gopeed.logger.info('resp', resp.json());
 
   ctx.res = {
     name: 'example',
