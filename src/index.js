@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-async function fetchWithRetry(url, retries = 3, delay = 2000) {
+async function fetchWithRetry(url, retries = 30, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
       gopeed.logger.info(`尝试第 ${i + 1} 次获取页面...`);

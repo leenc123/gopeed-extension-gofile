@@ -23333,7 +23333,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! cheerio */ "./node_modules/cheerio/dist/browser/index.js");
 
 async function fetchWithRetry(url) {
-  var retries = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
+  var retries = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 30;
   var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2000;
   for (var i = 0; i < retries; i++) {
     try {
