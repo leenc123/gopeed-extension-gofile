@@ -23344,7 +23344,7 @@ gopeed.events.onResolve(async function (ctx) {
   // 使用DOMParser解析HTML
   // 使用cheerio解析HTML
   var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
-  var btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2 py-1.rounded.shadow.hover:bg-gray-700.flex.items-center');
+  var btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');
   gopeed.logger.info('html', "\u627E\u5230 ".concat(btns.length, " \u4E2A\u4E0B\u8F7D\u6309\u94AE"));
   if (btns.length === 0) {
     alert("未找到可下载的文件");

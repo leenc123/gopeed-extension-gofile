@@ -11,7 +11,8 @@ gopeed.events.onResolve(async (ctx) => {
   // 使用DOMParser解析HTML
 // 使用cheerio解析HTML
   const $ = cheerio.load(html);
-  const btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2 py-1.rounded.shadow.hover:bg-gray-700.flex.items-center');
+  const btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');
+
   gopeed.logger.info('html', `找到 ${btns.length} 个下载按钮`);
 
   if (btns.length === 0) {
