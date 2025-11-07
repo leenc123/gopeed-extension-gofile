@@ -23332,21 +23332,99 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! cheerio */ "./node_modules/cheerio/dist/browser/index.js");
 
-gopeed.events.onResolve(async function (ctx) {
-  var path = new URL(ctx.req.url).pathname.substring(1);
-  var resp = await fetch(ctx.req.url, {
-    headers: {
-      'User-Agent': gopeed.settings.ua
+async function fetchWithRetry(url) {
+  var retries = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
+  var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2000;
+  for (var i = 0; i < retries; i++) {
+    try {
+      gopeed.logger.info("\u5C1D\u8BD5\u7B2C ".concat(i + 1, " \u6B21\u83B7\u53D6\u9875\u9762..."));
+      var resp = await fetch(url, {
+        headers: {
+          'User-Agent': gopeed.settings.ua,
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1'
+        },
+        timeout: 30000
+      });
+      if (!resp.ok) {
+        throw new Error("HTTP ".concat(resp.status, ": ").concat(resp.statusText));
+      }
+      var html = await resp.text();
+
+      // 检查页面是否包含预期内容
+      if (html.includes('item_download') || html.includes('download')) {
+        gopeed.logger.info('页面包含下载相关元素');
+        return html;
+      } else {
+        gopeed.logger.warn('页面可能未完全加载，未找到下载元素');
+        if (i < retries - 1) {
+          gopeed.logger.info("\u7B49\u5F85 ".concat(delay, "ms \u540E\u91CD\u8BD5..."));
+          await new Promise(function (resolve) {
+            return setTimeout(resolve, delay);
+          });
+        }
+      }
+    } catch (error) {
+      gopeed.logger.error("\u7B2C ".concat(i + 1, " \u6B21\u5C1D\u8BD5\u5931\u8D25:"), error);
+      if (i < retries - 1) {
+        await new Promise(function (resolve) {
+          return setTimeout(resolve, delay);
+        });
+      }
     }
-  });
-  var html = await resp.text();
-  // 使用cheerio解析HTML
-  var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
-  var btns = $('.item_download.border.text-white.px-2.py-1.rounded');
-  gopeed.logger.info('html', "\u627E\u5230 ".concat(btns.length, " \u4E2A\u4E0B\u8F7D\u6309\u94AE"));
-  if (btns.length === 0) {
-    alert("未找到可下载的文件");
-    return;
+  }
+  throw new Error('所有重试尝试都失败了');
+}
+gopeed.events.onResolve(async function (ctx) {
+  try {
+    var html = await fetchWithRetry(ctx.req.url, 3, 2000);
+    var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
+
+    // 多种方式查询元素
+    var selectors = ['.item_download', '[class*="item_download"]', '[class*="download"]', 'button[class*="download"]', 'a[class*="download"]'];
+    var foundElements = [];
+    var _loop = async function _loop() {
+      var selector = _selectors[_i];
+      var elements = $(selector);
+      gopeed.logger.info("\u9009\u62E9\u5668 \"".concat(selector, "\" \u627E\u5230 ").concat(elements.length, " \u4E2A\u5143\u7D20"));
+      elements.each(function (index, element) {
+        var $el = $(element);
+        var classes = $el.attr('class') || '';
+
+        // 检查是否包含目标class
+        var targetClasses = ['item_download', 'border', 'text-white', 'rounded'];
+        var hasTargetClasses = targetClasses.every(function (cls) {
+          return classes.includes(cls);
+        });
+        if (hasTargetClasses) {
+          foundElements.push({
+            $el: $el,
+            selector: selector,
+            text: $el.text().trim(),
+            classes: classes,
+            html: $el.prop('outerHTML')
+          });
+        }
+      });
+    };
+    for (var _i = 0, _selectors = selectors; _i < _selectors.length; _i++) {
+      await _loop();
+    }
+    gopeed.logger.info("\u603B\u5171\u627E\u5230 ".concat(foundElements.length, " \u4E2A\u5339\u914D\u5143\u7D20"));
+
+    // 输出详细信息
+    foundElements.forEach(function (item, index) {
+      gopeed.logger.info("=== \u5143\u7D20 ".concat(index + 1, " ==="));
+      gopeed.logger.info("\u9009\u62E9\u5668: ".concat(item.selector));
+      gopeed.logger.info("\u6587\u672C: ".concat(item.text));
+      gopeed.logger.info("Class: ".concat(item.classes));
+      gopeed.logger.info('================');
+    });
+  } catch (error) {
+    gopeed.logger.error('获取页面失败:', error);
   }
   ctx.res = {
     name: 'example',
