@@ -12,7 +12,7 @@ gopeed.events.onResolve(async (ctx) => {
 // 将响应转换为JSON对象
   const data = await resp.json();
   // 打印JSON字符串
-  const response = JSON.stringify(data, null, 2)
+  const response = JSON.parse(JSON.stringify(data, null, 2))
   if (response.status == 'ok')
   gopeed.logger.info('data', response.status);
 
