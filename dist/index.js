@@ -23335,10 +23335,10 @@ __webpack_require__.r(__webpack_exports__);
 gopeed.events.onResolve(async function (ctx) {
   var path = new URL(ctx.req.url).pathname.substring(1);
   gopeed.logger.info('path', path);
-  gopeed.logger.info('Authorization', gopeed.settings.Authorization);
+  gopeed.logger.info('Authorization', gopeed.settings.authorization);
   var resp = await fetch('https://api.gofile.io/contents/1c7K8b?wt=4fd6sg89d7s6', {
     headers: {
-      'authorization': gopeed.settings.Authorization
+      'authorization': gopeed.settings.authorization
     }
   });
   // 将响应转换为JSON对象
