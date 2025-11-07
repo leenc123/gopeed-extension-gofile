@@ -8,13 +8,10 @@ gopeed.events.onResolve(async (ctx) => {
   const html = await resp.text();
   gopeed.logger.info('html', html);
   // 使用DOMParser解析HTML
-  const parser = new DOMParser();
-  const document = parser.parseFromString(html, 'text/html');
-  let btns = document.querySelectorAll(
-    "button.item_download.border.border-gray-600"
-  );
-
-  console.debug(`找到 ${btns.length} 个下载按钮`);
+// 使用cheerio解析HTML
+  const $ = cheerio.load(html);
+  const btns = $('button.item_download.border.border-gray-600');
+  gopeed.logger.info('html', `找到 ${btns.length} 个下载按钮`);
 
   if (btns.length === 0) {
     alert("未找到可下载的文件");
