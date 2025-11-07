@@ -1,3 +1,4 @@
+import * as cheerio from 'cheerio';
 gopeed.events.onResolve(async (ctx) => {
   let path = new URL(ctx.req.url).pathname.substring(1);
   const resp = await fetch(ctx.req.url, {
@@ -10,7 +11,7 @@ gopeed.events.onResolve(async (ctx) => {
   // 使用DOMParser解析HTML
 // 使用cheerio解析HTML
   const $ = cheerio.load(html);
-  const btns = $('button.item_download.border.border-gray-600');
+  const btns = $('.button.item_download.border.border-gray-600');
   gopeed.logger.info('html', `找到 ${btns.length} 个下载按钮`);
 
   if (btns.length === 0) {

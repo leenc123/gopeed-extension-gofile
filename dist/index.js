@@ -21,6 +21,8 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
+Object(function webpackMissingModule() { var e = new Error("Cannot find module 'cheerio'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+
 gopeed.events.onResolve(async function (ctx) {
   var path = new URL(ctx.req.url).pathname.substring(1);
   var resp = await fetch(ctx.req.url, {
@@ -32,8 +34,8 @@ gopeed.events.onResolve(async function (ctx) {
   gopeed.logger.info('html', html);
   // 使用DOMParser解析HTML
   // 使用cheerio解析HTML
-  var $ = cheerio.load(html);
-  var btns = $('button.item_download.border.border-gray-600');
+  var $ = Object(function webpackMissingModule() { var e = new Error("Cannot find module 'cheerio'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(html);
+  var btns = $('.button.item_download.border.border-gray-600');
   gopeed.logger.info('html', "\u627E\u5230 ".concat(btns.length, " \u4E2A\u4E0B\u8F7D\u6309\u94AE"));
   if (btns.length === 0) {
     alert("未找到可下载的文件");
