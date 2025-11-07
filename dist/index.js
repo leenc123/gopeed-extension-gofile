@@ -23336,7 +23336,7 @@ gopeed.events.onResolve(async function (ctx) {
   var path = new URL(ctx.req.url).pathname.substring(1);
   gopeed.logger.info('path', path);
   gopeed.logger.info('Authorization', gopeed.settings.authorization);
-  var resp = await fetch('https://api.gofile.io/contents/1c7K8b?wt=4fd6sg89d7s6', {
+  var resp = await fetch('https://api.gofile.io/contents/1c7K8b?wt=4fd6sg89d7s6&contentFilter=&page=1&pageSize=1000&sortField=name&sortDirection=1', {
     headers: {
       'authorization': gopeed.settings.authorization
     }
@@ -23345,7 +23345,7 @@ gopeed.events.onResolve(async function (ctx) {
   var data = await resp.json();
   // 打印JSON字符串
   var response = JSON.parse(JSON.stringify(data, null, 2));
-  files = [];
+  var files = [];
   if (response.status == 'ok') {
     files = Object.values(response.data.children).map(function (item) {
       return {
