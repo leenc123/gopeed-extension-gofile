@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-async function fetchWithRetry(url, retries = 30, delay = 2000) {
+async function fetchWithRetry(url, retries = 3, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
       gopeed.logger.info(`尝试第 ${i + 1} 次获取页面...`);
@@ -44,7 +44,7 @@ async function fetchWithRetry(url, retries = 30, delay = 2000) {
 }
 gopeed.events.onResolve(async (ctx) => {
   try {
-    const html = await fetchWithRetry(ctx.req.url, 3, 2000);
+    const html = await fetchWithRetry(ctx.req.url, 30, 2000);
     const $ = cheerio.load(html);
 
     // 多种方式查询元素
