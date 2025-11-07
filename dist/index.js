@@ -23332,26 +23332,32 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! cheerio */ "./node_modules/cheerio/dist/browser/index.js");
 
-async function fetchWithWait(url) {
-  var waitTime = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3000;
-  gopeed.logger.info("\u83B7\u53D6\u9875\u9762\uFF0C\u7B49\u5F85 ".concat(waitTime, "ms \u6A21\u62DF\u52A0\u8F7D..."));
-  var resp = await fetch(url, {
-    headers: {
-      'User-Agent': gopeed.settings.ua
-    }
+var puppeteer = require('puppeteer');
+async function simplePuppeteerFetch(url) {
+  var browser = await puppeteer.launch({
+    headless: true
   });
-  var html = await resp.text();
+  try {
+    var page = await browser.newPage();
+    await page.setUserAgent(gopeed.settings.ua);
 
-  // 模拟等待页面 JavaScript 执行
-  await new Promise(function (resolve) {
-    return setTimeout(resolve, waitTime);
-  });
-  return html;
+    // 访问页面
+    await page["goto"](url, {
+      waitUntil: 'networkidle0',
+      timeout: 30000
+    });
+
+    // 获取完整 HTML
+    var html = await page.content();
+    return html;
+  } finally {
+    await browser.close();
+  }
 }
 gopeed.events.onResolve(async function (ctx) {
   try {
     // 使用示例
-    var html = await fetchWithWait(ctx.req.url, 10000);
+    var html = await simplePuppeteerFetch(ctx.req.url);
     var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
 
     // 多种方式查询元素

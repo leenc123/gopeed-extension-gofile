@@ -1,24 +1,27 @@
 import * as cheerio from 'cheerio';
-async function fetchWithWait(url, waitTime = 3000) {
-    gopeed.logger.info(`获取页面，等待 ${waitTime}ms 模拟加载...`);
+const puppeteer = require('puppeteer');
+async function simplePuppeteerFetch(url) {
+    const browser = await puppeteer.launch({ headless: true });
     
-    const resp = await fetch(url, {
-        headers: {
-            'User-Agent': gopeed.settings.ua,
-        },
-    });
-    
-    const html = await resp.text();
-    
-    // 模拟等待页面 JavaScript 执行
-    await new Promise(resolve => setTimeout(resolve, waitTime));
-    
-    return html;
+    try {
+        const page = await browser.newPage();
+        await page.setUserAgent(gopeed.settings.ua);
+        
+        // 访问页面
+        await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+        
+        // 获取完整 HTML
+        const html = await page.content();
+        return html;
+        
+    } finally {
+        await browser.close();
+    }
 }
 gopeed.events.onResolve(async (ctx) => {
   try {
    // 使用示例
-    const html = await fetchWithWait(ctx.req.url, 10000);
+    const html = await simplePuppeteerFetch(ctx.req.url);
     const $ = cheerio.load(html);
 
     // 多种方式查询元素
