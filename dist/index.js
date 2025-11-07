@@ -23332,70 +23332,23 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! cheerio */ "./node_modules/cheerio/dist/browser/index.js");
 
-async function fetchWithWait(url) {
-  var waitTime = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3000;
-  gopeed.logger.info("\u83B7\u53D6\u9875\u9762\uFF0C\u7B49\u5F85 ".concat(waitTime, "ms \u6A21\u62DF\u52A0\u8F7D..."));
-  var resp = await fetch(url, {
+gopeed.events.onResolve(async function (ctx) {
+  var path = new URL(ctx.req.url).pathname.substring(1);
+  var resp = await fetch(ctx.req.url, {
     headers: {
       'User-Agent': gopeed.settings.ua
     }
   });
   var html = await resp.text();
-
-  // 模拟等待页面 JavaScript 执行
-  await new Promise(function (resolve) {
-    return setTimeout(resolve, waitTime);
-  });
-  return html;
-}
-gopeed.events.onResolve(async function (ctx) {
-  try {
-    // 使用示例
-    var html = await fetchWithWait(ctx.req.url, 10000);
-    var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
-
-    // 多种方式查询元素
-    var selectors = ['.item_download', '[class*="item_download"]', '[class*="download"]', 'button[class*="download"]', 'a[class*="download"]'];
-    var foundElements = [];
-    var _loop = async function _loop() {
-      var selector = _selectors[_i];
-      var elements = $(selector);
-      gopeed.logger.info("\u9009\u62E9\u5668 \"".concat(selector, "\" \u627E\u5230 ").concat(elements.length, " \u4E2A\u5143\u7D20"));
-      elements.each(function (index, element) {
-        var $el = $(element);
-        var classes = $el.attr('class') || '';
-
-        // 检查是否包含目标class
-        var targetClasses = ['item_download', 'border', 'text-white', 'rounded'];
-        var hasTargetClasses = targetClasses.every(function (cls) {
-          return classes.includes(cls);
-        });
-        if (hasTargetClasses) {
-          foundElements.push({
-            $el: $el,
-            selector: selector,
-            text: $el.text().trim(),
-            classes: classes,
-            html: $el.prop('outerHTML')
-          });
-        }
-      });
-    };
-    for (var _i = 0, _selectors = selectors; _i < _selectors.length; _i++) {
-      await _loop();
-    }
-    gopeed.logger.info("\u603B\u5171\u627E\u5230 ".concat(foundElements.length, " \u4E2A\u5339\u914D\u5143\u7D20"));
-
-    // 输出详细信息
-    foundElements.forEach(function (item, index) {
-      gopeed.logger.info("=== \u5143\u7D20 ".concat(index + 1, " ==="));
-      gopeed.logger.info("\u9009\u62E9\u5668: ".concat(item.selector));
-      gopeed.logger.info("\u6587\u672C: ".concat(item.text));
-      gopeed.logger.info("Class: ".concat(item.classes));
-      gopeed.logger.info('================');
-    });
-  } catch (error) {
-    gopeed.logger.error('获取页面失败:', error);
+  gopeed.logger.info('html', html);
+  // 使用DOMParser解析HTML
+  // 使用cheerio解析HTML
+  var $ = cheerio__WEBPACK_IMPORTED_MODULE_0__.load(html);
+  var btns = $('.item_download.border.border-gray-600.text-white.text-sm.px-2.py-1.rounded.shadow.hover\\:bg-gray-700.flex.items-center');
+  gopeed.logger.info('html', "\u627E\u5230 ".concat(btns.length, " \u4E2A\u4E0B\u8F7D\u6309\u94AE"));
+  if (btns.length === 0) {
+    alert("未找到可下载的文件");
+    return;
   }
   ctx.res = {
     name: 'example',

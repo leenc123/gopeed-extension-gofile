@@ -18,5 +18,13 @@
       "entry": "dist/index.js"
     }
   ],
-  "settings": []
+  "settings": [
+    {
+    "name": "authorization",
+    "title": "Authorization",
+    "description": "token参数",
+    "type": "string",
+    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"
+  }
+  ]
 }
