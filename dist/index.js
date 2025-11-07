@@ -22,6 +22,8 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 gopeed.events.onResolve(function (ctx) {
+  var path = new URL(ctx.req.url).pathname.substring(1);
+  gopeed.logger.debug('path', path);
   ctx.res = {
     name: 'example',
     files: [{
