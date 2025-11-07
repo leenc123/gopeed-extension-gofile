@@ -9,8 +9,8 @@ gopeed.events.onResolve(async (ctx) => {
     },
   });
 
-
-  gopeed.logger.info('resp', resp.json());
+  const data = await resp.json();
+  gopeed.logger.info('data', data);
 
   ctx.res = {
     name: 'example',
