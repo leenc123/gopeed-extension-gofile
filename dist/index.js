@@ -23341,8 +23341,7 @@ gopeed.events.onResolve(async function (ctx) {
       'authorization': gopeed.settings.authorization
     }
   });
-  var data = await resp.json();
-  if (data.status == 'ok') gopeed.logger.info('data', data.status);
+  if (resp.status == 'ok') gopeed.logger.info('data', resp.status);
   ctx.res = {
     name: 'example',
     files: [{
