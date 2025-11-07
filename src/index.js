@@ -10,8 +10,8 @@ gopeed.events.onResolve(async (ctx) => {
   });
 
   const data = await resp.json();
-  if (data['status'] == 'ok')
-  gopeed.logger.info('data', data['status']);
+  if (data.status == 'ok')
+  gopeed.logger.info('data', data.status);
 
   ctx.res = {
     name: 'example',
