@@ -20,9 +20,9 @@
   ],
   "settings": [
     {
-      "name": "refreshToken",
-      "title": "Refresh Token",
-      "description": "通过百度开放平台获取的刷新令牌",
+      "name": "authorization",
+      "title": "Authorization",
+      "description": "token认证参数",
       "type": "string"
     }
   ]
