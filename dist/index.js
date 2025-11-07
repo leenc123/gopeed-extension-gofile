@@ -23344,8 +23344,8 @@ gopeed.events.onResolve(async function (ctx) {
   // 将响应转换为JSON对象
   var data = await resp.json();
   // 打印JSON字符串
-  gopeed.logger.info(JSON.stringify(data, null, 2));
-  if (resp.status == 'ok') gopeed.logger.info('data', resp.status);
+  var response = JSON.stringify(data, null, 2);
+  if (response.status == 'ok') gopeed.logger.info('data', response.status);
   ctx.res = {
     name: 'example',
     files: [{
