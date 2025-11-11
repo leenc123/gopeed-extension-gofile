@@ -15,39 +15,16 @@ gopeed.events.onResolve(async (ctx) => {
   const response = JSON.parse(JSON.stringify(data, null, 2))
   let files = []
   if (response.status == 'ok') {
-    files = await Promise.all(
-      Object.values(response.data.children).map(async (item) => {
-        let fileSize = 0; // 默认大小
-
-        try {
-          // 发送HEAD请求获取文件大小
-          const resp = await fetch({
-            url: item.link,
-            method: 'HEAD'
-          });
-
-          // 从Content-Length头部获取文件大小
-          const contentLength = resp.headers['content-length'];
-          if (contentLength) {
-            fileSize = parseInt(contentLength);
-          }
-        } catch (error) {
-          gopeed.logger.warn(`无法获取文件大小: ${item.link}`, error);
-          // 保持默认大小
-        }
-
-        return {
-          req: {
-            url: item.link
-          },
-          size: fileSize,
-          name: item.name
-        };
-      })
-    );
+    files = Object.values(response.data.children).map(item => ({
+      req: {
+        url:item.link
+      },
+      size:item.size,
+      name: item.name
+    }));
   }
   gopeed.logger.info('files', files);
-
+ 
 
   ctx.res = {
     name: '文件地址',

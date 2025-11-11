@@ -23347,33 +23347,15 @@ gopeed.events.onResolve(async function (ctx) {
   var response = JSON.parse(JSON.stringify(data, null, 2));
   var files = [];
   if (response.status == 'ok') {
-    files = await Promise.all(Object.values(response.data.children).map(async function (item) {
-      var fileSize = 0; // 默认大小
-
-      try {
-        // 发送HEAD请求获取文件大小
-        var _resp = await fetch({
-          url: item.link,
-          method: 'HEAD'
-        });
-
-        // 从Content-Length头部获取文件大小
-        var contentLength = _resp.headers['content-length'];
-        if (contentLength) {
-          fileSize = parseInt(contentLength);
-        }
-      } catch (error) {
-        gopeed.logger.warn("\u65E0\u6CD5\u83B7\u53D6\u6587\u4EF6\u5927\u5C0F: ".concat(item.link), error);
-        // 保持默认大小
-      }
+    files = Object.values(response.data.children).map(function (item) {
       return {
         req: {
           url: item.link
         },
-        size: fileSize,
+        size: item.size,
         name: item.name
       };
-    }));
+    });
   }
   gopeed.logger.info('files', files);
   ctx.res = {
