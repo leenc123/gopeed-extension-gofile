@@ -23352,9 +23352,17 @@ gopeed.events.onResolve(async function (ctx) {
         req: {
           url: item.link,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Accept': '*/*',
-            'Referer': 'https://gofile.io/'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/x-rar-compressed, application/octet-stream, */*',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'identity',
+            // 重要：不要压缩，保持原始文件
+            'Referer': 'https://gofile.io/',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'DNT': '1',
+            'Connection': 'keep-alive'
           }
         },
         size: item.size,
