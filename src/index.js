@@ -19,6 +19,7 @@ gopeed.events.onResolve(async (ctx) => {
       req: {
         url:item.link
       },
+      size:1233333,
       name: item.name
     }));
   }
