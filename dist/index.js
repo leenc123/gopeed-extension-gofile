@@ -23362,12 +23362,15 @@ gopeed.events.onResolve(async function (ctx) {
             'Sec-Fetch-Mode': 'navigate',
             'Sec-Fetch-Site': 'same-origin',
             'Cache-Control': 'max-age=0',
+            'Range': 'bytes=0-',
             'Connection': 'keep-alive',
             'Cookie': 'accountToken=0nH28s5BYUEEdU0c4YZyLC6H1iFs67SK',
             'Host': 'store3.gofile.io'
           }
         },
         size: item.size,
+        tolerance: 0,
+        connections: 1,
         name: item.name
       };
     });

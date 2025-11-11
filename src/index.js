@@ -19,22 +19,25 @@ gopeed.events.onResolve(async (ctx) => {
       req: {
         url: item.link,
         headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br, zstd',
-        'Referer': 'https://gofile.io/',
-        'Origin': 'https://gofile.io',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'same-origin',
-        'Cache-Control': 'max-age=0',
-        'Connection':'keep-alive',
-        'Cookie':'accountToken=0nH28s5BYUEEdU0c4YZyLC6H1iFs67SK',
-        'Host':'store3.gofile.io'
-      }
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br, zstd',
+          'Referer': 'https://gofile.io/',
+          'Origin': 'https://gofile.io',
+          'Sec-Fetch-Dest': 'document',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Site': 'same-origin',
+          'Cache-Control': 'max-age=0',
+          'Range': 'bytes=0-',
+          'Connection': 'keep-alive',
+          'Cookie': 'accountToken=0nH28s5BYUEEdU0c4YZyLC6H1iFs67SK',
+          'Host': 'store3.gofile.io'
+        }
       },
       size: item.size,
+      tolerance: 0,
+      connections: 1,
       name: item.name
     }));
   }
