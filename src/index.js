@@ -21,7 +21,7 @@ gopeed.events.onResolve(async (ctx) => {
 
         try {
           // 发送HEAD请求获取文件大小
-          const resp = await gopeed.fetch({
+          const resp = await fetch({
             url: item.link,
             method: 'HEAD'
           });
