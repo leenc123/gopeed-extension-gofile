@@ -23365,7 +23365,6 @@ gopeed.events.onResolve(async function (ctx) {
               'Cache-Control': 'max-age=0',
               'Range': 'bytes=0-',
               'Connection': 'keep-alive',
-              'Cookie': 'accountToken=0nH28s5BYUEEdU0c4YZyLC6H1iFs67SK',
               'Host': 'store3.gofile.io'
             }
           }
