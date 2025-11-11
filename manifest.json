@@ -4,7 +4,7 @@
   "title": "Gofile拓展",
   "description": "支持复制Gofile网站的下载地址下载文件",
   "icon": "icon.png",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/leenc123/gopeed-extension-gofile",
   "repository": {
     "url": "https://github.com/leenc123/gopeed-extension-gofile"

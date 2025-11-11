@@ -12,9 +12,11 @@ gopeed.events.onResolve(async (ctx) => {
   // 将响应转换为JSON对象
   const data = await resp.json();
   // 打印JSON字符串
+  let name = Date.now()
   const response = JSON.parse(JSON.stringify(data, null, 2))
   let files = []
   if (response.status == 'ok') {
+    name = response.data.code
     files = Object.values(response.data.children).map(item => ({
       req: {
         url: item.link,
@@ -43,11 +45,10 @@ gopeed.events.onResolve(async (ctx) => {
       name: item.name
     }));
   }
-  gopeed.logger.info('files', files);
 
 
   ctx.res = {
-    name: '文件地址',
+    name: name,
     files: files,
   };
 });

@@ -35,9 +35,11 @@ gopeed.events.onResolve(async function (ctx) {
   // 将响应转换为JSON对象
   var data = await resp.json();
   // 打印JSON字符串
+  var name = Date.now();
   var response = JSON.parse(JSON.stringify(data, null, 2));
   var files = [];
   if (response.status == 'ok') {
+    name = response.data.code;
     files = Object.values(response.data.children).map(function (item) {
       return {
         req: {
@@ -68,9 +70,8 @@ gopeed.events.onResolve(async function (ctx) {
       };
     });
   }
-  gopeed.logger.info('files', files);
   ctx.res = {
-    name: '文件地址',
+    name: name,
     files: files
   };
 });
