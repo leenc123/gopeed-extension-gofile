@@ -1,10 +1,10 @@
-import * as cheerio from 'cheerio';
 gopeed.events.onResolve(async (ctx) => {
   let path = new URL(ctx.req.url).pathname.substring(1);
   gopeed.logger.info('path', path);
-
+  let url = path.split('/').pop();
+  gopeed.logger.info('url', url);
   gopeed.logger.info('Authorization', gopeed.settings.authorization);
-  const resp = await fetch('https://api.gofile.io/contents/1c7K8b?wt=4fd6sg89d7s6&contentFilter=&page=1&pageSize=1000&sortField=name&sortDirection=1', {
+  const resp = await fetch(`https://api.gofile.io/contents/${url}?wt=4fd6sg89d7s6&contentFilter=&page=1&pageSize=1000&sortField=name&sortDirection=1`, {
     headers: {
       'authorization': gopeed.settings.authorization,
     },
@@ -32,6 +32,7 @@ gopeed.events.onResolve(async (ctx) => {
             'Cache-Control': 'max-age=0',
             'Range': 'bytes=0-',
             'Connection': 'keep-alive',
+            'Cookie': `accountToken=${gopeed.settings.accountToken}`,
             'Host': 'store3.gofile.io'
           }
         },

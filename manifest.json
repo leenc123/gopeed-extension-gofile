@@ -4,7 +4,7 @@
   "title": "Gofile拓展",
   "description": "Gofile拓展",
   "icon": "",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "homepage": "",
   "repository": {
     "url": "https://github.com/leenc123/gopeed-extension-gofile"
@@ -23,6 +23,12 @@
       "name": "authorization",
       "title": "Authorization",
       "description": "token认证参数",
+      "type": "string"
+    },
+    {
+      "name": "accountToken",
+      "title": "AccountToken",
+      "description": "cookieToken",
       "type": "string"
     }
   ]
